@@ -1,0 +1,27 @@
+#
+This is a short demo of scriter.
+
+#
+This is the scriptable iterator.
+
+#
+Here is the example file:
+`cat example`
+
+#
+As you can see, the scriptable iterator allows us to execute arbitrary commands in sequence, with information.
+
+#
+Results of running git init:
+`git init`
+
+#
+We can provide tips on what is going on.
+
+#
+Git add example:
+`git add example`
+
+#
+Here is your new git status:
+`git status`
