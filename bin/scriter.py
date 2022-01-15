@@ -12,12 +12,11 @@ home_path = os.environ["HOME"]
 meta_path = os.path.join(home_path, ".scriter/")
 meta_dict = serial_dict(meta_path)
 
-# stdout the cmd_view on given input
-def view_and_exit(text):
-    cmd_view(meta_dict["cmd_view"], text);
-    exit()
+# stdout the display_cmd on given input
+def view(text):
+    cmd_view(meta_dict["display_cmd"], text);
 
-# gets the number of entries in the src file
+# gets the number of entries in a src file
 def get_num_entries(src_path):
     src = open(src_path, 'r')
     num_entries = 1
@@ -32,26 +31,33 @@ def get_num_entries(src_path):
     return num_entries
 
 # scriter.py init
-def init(args):
+def init():
     if not os.path.isdir(meta_path):
         try:
             os.mkdir(meta_path)
         except OSError:
             cmd_view("cat", "Cannot Initialize Persistence")
             exit()
-        meta_dict["cmd_view"] = "cat"
+        meta_dict["display_cmd"] = "cat"
         meta_dict["src_path"] = ""
         meta_dict["entry_num"] = 0
         meta_dict["num_entries"] = 0
-    view_and_exit("initialized scriter (use scr.help for help)")
+
+def init_public(args):
+    init()
+    view("initialized scriter (use scr.help for help)")
     
 # scriter.py help
-def hlp(args):
+def hlp():
     help_text  = "Available Commands:\n"
     help_text += "\tscr.help\n"
     help_text +=     "\t\t- brings up this help screen\n"
     help_text += "\tscr.status\n"
     help_text +=     "\t\t- details scriter state\n"
+    help_text += "\tscr.get <var_name>\n"
+    help_text +=     "\t\t- returns a variable's value\n"
+    help_text += "\tscr.display_cmd <cmd>\n"
+    help_text +=     "\t\t- sets the scriter display cmd\n"
     help_text += "\tscr.use <file_path>\n"
     help_text +=     "\t\t- selects the given file to iterate on\n"
     help_text += "\tscr.reset\n"
@@ -70,42 +76,70 @@ def hlp(args):
     help_text +=     "\t\t- iterates to the next entry and runs it\n"
     help_text += "\tscr.clean\n"
     help_text +=     "\t\t- removes the scriter metadata folder"
-    cmd_view("cat", help_text)
-    exit()
+    return help_text
+
+def hlp_public(args):
+    view(hlp())
 
 # scriter.py status
-def status(args):
-    view_and_exit("Cmd View: %s\nUsing: %s\nAt Entry: %s\nTotal Entries: %s"%(meta_dict["cmd_view"], meta_dict["src_path"], meta_dict["entry_num"], meta_dict["num_entries"]))
+def status():
+    return("display_cmd: %s\nsrc_path: %s\nAt entry_num: %s\nnum_entries: %s"%(meta_dict["display_cmd"], meta_dict["src_path"], meta_dict["entry_num"], meta_dict["num_entries"]))
+
+def status_public(args):
+    view(status())
+
+# scriter.py get <var_name>
+def get(var_name):
+    if meta_dict.contains_key(var_name):
+        return meta_dict[var_name]
+    return ""
+
+def get_public(args):
+    view(get(args[2]))
+
+# scriter.py display_cmd <cmd>
+def display_cmd(cmd):
+    meta_dict["display_cmd"] = cmd
+
+def display_cmd_public(args):
+    display_cmd(args[2])
+    view("display_cmd set to %s"%(args[2]))
     
 # scriter.py use <filepath>
-def use(args):
-    src_path = os.path.abspath(args[2])
+def use(path):
+    src_path = os.path.abspath(path)
     meta_dict["src_path"] = src_path
     meta_dict["entry_num"] = 0
     meta_dict["num_entries"] = get_num_entries(src_path)
-    view_and_exit("using %s"%(args[2]))
+
+def use_public(args):
+    use(args[2])
+    view("using %s"%(args[2]))    
 
 # scriter.py reset
-def reset(args):
-    src_path = meta_dict["src_path"]
+def reset():
     meta_dict["entry_num"] = 0
-    meta_dict["num_entries"] = get_num_entries(src_path)
-    view_and_exit("reset %s"%(src_path))
+    meta_dict["num_entries"] = get_num_entries(meta_dict["src_path"])
+
+def reset_public(args):
+    reset()
+    view("reset %s"%(meta_dict["src_path"]))
 
 # scriter.py rep
-def repeat(args):
+def repeat():
     src_path = meta_dict["src_path"]
-    if not os.path.isfile(src_path):
-        view_and_exit("src_path does not exist")
-    src = open(src_path, 'r')
+    try:
+        src = open(src_path, 'r')
+    except IOError:
+        return "src_path could not be opened"
     entry_num = int(meta_dict["entry_num"])
-
+    
     if entry_num == 0:
-        view_and_exit("Start of File")
-
+        return "Start of File"
+    
     if entry_num == int(meta_dict["num_entries"]):
-        view_and_exit("End of File")
-
+        return "End of File"
+    
     # goto entry
     line = ""
     iter_entry_num = 0
@@ -116,13 +150,13 @@ def repeat(args):
             if line[:len(search_str)] == search_str:
                 iter_entry_num += 1
         except StopIteration:
-            view_and_exit("File Modified Since Use")
+            return "File Modified Since Use"
     
     # proceed to next line
     try:
         line = src.next()
     except StopIteration:
-        view_and_exit("")
+        return ""
 
     # go until next entry_num
     entry = ""    
@@ -134,51 +168,70 @@ def repeat(args):
         except StopIteration:
             break
 
-    # view_and_exit
+    # view
     src.close()
-    view_and_exit(entry.strip())
+    return entry.strip()
+
+def repeat_public(args):
+    view(repeat())
 
 # scriter.py goto
-def goto(args):
-    entry_num = int(args[2])
+def goto(entry_num):
     if entry_num >= 0 and entry_num <= int(meta_dict["num_entries"]):
         meta_dict["entry_num"] = entry_num
 
+def goto_public(args):
+    goto(int(args[2]))
+
 # scriter.py bwd
-def bwd(args):
+def bwd():
     entry_num = int(meta_dict["entry_num"]) - 1
     if entry_num >= 0 and entry_num <= int(meta_dict["num_entries"]):
         meta_dict["entry_num"] = entry_num
+
+def bwd_public(args):
+    bwd()
     
 # scriter.py fwd
-def fwd(args):
+def fwd():
     entry_num = int(meta_dict["entry_num"]) + 1
     if entry_num >= 0 and entry_num <= int(meta_dict["num_entries"]):
         meta_dict["entry_num"] = entry_num
 
+def fwd_public(args):
+    fwd()
+
 # scriter.py prev
-def prev(args):
-    bwd(args)
-    repeat(args)
+def prev():
+    bwd()
+    return repeat()
+
+def prev_public():
+    view(prev())
 
 # scriter.py next
-def nxt(args):
-    fwd(args)
-    repeat(args)
+def nxt():
+    fwd()
+    return repeat()
+
+def nxt_public(args):
+    view(nxt())
 
 # UI
 commands = dict()
-commands["init"] = init
-commands["help"] = hlp
-commands["status"] = status
-commands["use"] = use
-commands["reset"] = reset
-commands["rep"] = repeat
-commands["goto"] = goto
-commands["bwd"] = bwd
-commands["fwd"] = fwd
-commands["prev"] = prev
-commands["next"] = nxt
+commands["init"] = init_public
+commands["help"] = hlp_public
+commands["status"] = status_public
+commands["get"] = get_public
+commands["display_cmd"] = display_cmd_public
+commands["use"] = use_public
+commands["reset"] = reset_public
+commands["rep"] = repeat_public
+commands["goto"] = goto_public
+commands["bwd"] = bwd_public
+commands["fwd"] = fwd_public
+commands["prev"] = prev_public
+commands["next"] = nxt_public
     
 def main(args):
     if len(args) == 1:

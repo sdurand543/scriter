@@ -8,7 +8,7 @@ class serial_dict():
 
     def contains_key(self, key):
         entry_path = os.path.join(self.dict_path, key)
-        return entry_path.is_file()
+        return os.path.isfile(entry_path)
         
     def __getitem__(self, key):
         entry_path = os.path.join(self.dict_path, key)

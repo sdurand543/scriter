@@ -15,6 +15,14 @@ function scr.status() {
     eval "$(python $SCRITER_BIN/scriter.py status)"
 }
 
+function scr.get() {
+    eval "$(python $SCRITER_BIN/scriter.py get $1)"
+}
+
+function scr.display_cmd() {
+    eval "$(python $SCRITER_BIN/scriter.py display_cmd $1)"
+}
+
 function scr.use() {
     eval "$(python $SCRITER_BIN/scriter.py use $1)"
 }
