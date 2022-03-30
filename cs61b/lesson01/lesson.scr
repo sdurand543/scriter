@@ -1,0 +1,43 @@
+#
+Lesson01: Java Programming
+`SDIR="$(scr get dir_path)"`
+`source $SDIR/include/all.sh`
+#
+In this lesson, we will cover the basics of Java Programming, having you explore its syntax and structure.
+#
+First, let's look at a quick example of a Java class (below).
+`HW=$SDIR/HelloWorld.java`
+`cat $HW`
+#
+Let's start by defining what a 'class' is.
+In an object-oriented language, a class is generally regarded as a blueprint for an instantiable object.
+In this specific example, we avoid instantiation (to reduce complexity) by relying on a 'static' method call.
+#
+Notice the 'static' keyword in the below snippet:
+`cat $HW | grep static`
+#
+The static keyword indicates that a method is owned by the class rather than any specific instance. If you think of a class as a blueprint for a building,
+a static member is an attribute specific to the blueprint itself (perhaps an ink smear) that is not going to be replicated during instantiation.
+There is a lot of jargon and lingo that is used when refering to objects and classes. For the most part, a lot of them just reduce to 'thing' that is
+a part of a given object. For instance, a fork may be a member of a cutlery set. It may also be considered an attribute, an instance variable, or one of many other terms.
+#
+Now notice the general syntax of the java language. Classes are made of variable and method definitions. In our example, we see a static method definition.
+Methods in Java are denoted using parentheses and curly braces. Parentheses enclose the function parameters, and curly braces enclose the function body. Again with the jargon. You may have noticed me calling a method a function / a function a method. In Java, all code must be enclosed in a class, so all functions are methods and vice-versa (with the exception of anonymous functions, which we will cover much later). In some other languages, like Python, you can have a top-level function that is not associated with a class, or a nested function that is localized within a function's scope; as just stated, Java does not support class-less functions. It also does not support function nesting. Instead, we use access modifiers to facilitate abstraction, and the static keyword to denote top-level functions (but they will be associated with the namespace of a specific class).
+#
+
+Every java source file must contain a public class with the same name as the the source file. In this case, "HelloWorld".
+
+
+Below is a
+
+
+`
+if [ check ex1 ]
+    then
+        scr goto pass
+    else
+        goto fail
+fi
+`
+# fail
+# pass

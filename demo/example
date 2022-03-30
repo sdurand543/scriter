@@ -1,27 +1,47 @@
-#
+# 1
 This is a short demo of scriter.
 
-#
+# 2
 This is the scriptable iterator.
 
-#
+# 3
 Here is the example file:
 `cat example`
 
-#
+# 4
 As you can see, the scriptable iterator allows us to execute arbitrary commands in sequence, with information.
 
-#
+# 5
 Results of running git init:
 `git init`
 
-#
+# 6
 We can provide tips on what is going on.
 
-#
+# 7
 Git add example:
 `git add example`
 
-#
+# 8
 Here is your new git status:
 `git status`
+
+# 9
+You can also write scriter steps that interact with scriter. Here is an infinite loop.
+
+# 10
+```
+function skip() {
+    scr.goto 11
+}
+```
+Use 'skip' to exit.
+
+# 11
+You have exited the infinite loop.
+```
+unset -f skip
+```
+
+# 12
+Ideally we will add 'options' and input boxes, with insert-text support.
