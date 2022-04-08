@@ -5,37 +5,35 @@ from commands.repeat import repeat
 from commands.bwd_fwd import backward
 from commands.bwd_fwd import forward
 
-def previous_model():
-    backward.f_model()
-    return repeat.f_model()
+def previous():
+    backward()
+    return repeat()
 
 def previous_view(args):
-    assert(len(args)) == 2
-    view(previous_model())
+    view(previous())
 
 # scriter.py next
-def nextt_model():
-    forward.f_model()
-    return repeat.f_model()
+def nextt():
+    forward()
+    return repeat()
 
 def nextt_view(args):
-    assert(len(args)) == 2
-    view(nextt_model())
+    view(nextt())
 
-previous = CMD \
+previous_cmd = CMD \
 (
     'prev',
     'scr prev',
     'iterates to the previous scriter entry and repeats it',
-    previous_model,
     previous_view,
+    [0],
 )
 
-nextt = CMD \
+nextt_cmd = CMD \
 (
     'next',
     'scr next',
     'iterates to the next scriter entry and repeats it',
-    nextt_model,
     nextt_view,
+    [0],
 )

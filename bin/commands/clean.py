@@ -1,31 +1,20 @@
-import os, shutil
+import os
 
 from metadata import *
 from commands.CMD import CMD
 
-def remove(path):
-    """
-    Removes the subtree of directories rooted at path.
-    """
-    if os.path.exists(path):  
-        if os.path.isfile(path) or os.path.islink(path):
-            os.unlink(path)
-        else:
-            shutil.rmtree(path)
-
-def clean_model():
+def clean():
     remove(meta_path)
     
 def clean_view(args):
-    assert len(args) == 2
-    clean_model()
+    clean()
     view("cleaned scriter HOME meta-directory")
 
-clean = CMD \
+clean_cmd = CMD \
 (
     'clean',
     'scr clean',
     'cleans scriter HOME meta-directory',
-    clean_model,
     clean_view,
+    [0],
 )

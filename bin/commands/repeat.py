@@ -1,7 +1,7 @@
 from metadata import *
 from commands.CMD import CMD
 
-def repeat_model():
+def repeat():
     src_path = meta_dict["src_path"]
     try:
         src = open(src_path, 'r')
@@ -48,14 +48,13 @@ def repeat_model():
     return entry.strip()
 
 def repeat_view(args):
-    assert(len(args)) == 2
-    view(repeat_model())
+    view(repeat())
 
-repeat = CMD \
+repeat_cmd = CMD \
 (
-    'repeat',
+    'rep',
     'scr rep',
     'repeats the current scriter entry',
-    repeat_model,
     repeat_view,
+    [0],
 )

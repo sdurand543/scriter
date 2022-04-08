@@ -1,9 +1,0 @@
-you are currently working on porting over the functions into different files (follow init template)
-then you will test functionality
-
-add ability to jump to named locations, and revise existing goto to use '!<number>!'
-add soft-run (does not insert results)
-add read text functionality
-add replace text functionality
-add switchable sessions
-add unique interactable text editor ide
