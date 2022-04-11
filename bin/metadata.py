@@ -1,7 +1,8 @@
 import os, shutil
 
 from serial_dict import serial_dict
-from cmd_view import cmd_view
+from preprocessing.PREP import preprocessors
+from preprocessing.default import default_preprocessor
 
 ENTRY_PREFIX = "#"
 
@@ -15,15 +16,16 @@ def initialized():
     """
     return os.path.exists(meta_path)
 
-def view(text):
+def view(data):
     """
     use the preprocessor to write to the 'source' file
     """
-    if meta_dict.contains_key("display_cmd"):
-        display_cmd = meta_dict["display_cmd"]
-    else:
-        display_cmd = 'cat'
-    cmd_view(display_cmd, text)
+    preprocessor = preprocessors[meta_dict['preprocessor']]
+    output_data = preprocessor.f_preprocess(data)
+    source_cmd_path = "%s/source_cmd"%(meta_path)
+    source_cmd_file = open(source_cmd_path, 'w')
+    source_cmd_file.write(output_data)
+    source_cmd_file.close()
 
 def err(msg):
     """

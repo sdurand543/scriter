@@ -5,21 +5,7 @@ import os, sys
 from metadata import *
 from commands.CMD import cmds
 from commands.init import init
-
-from commands.init import init_cmd
-from commands.status import status_cmd
-from commands.helpp import helpp_cmd
-from commands.get import get_cmd
-from commands.sett import sett_cmd
-from commands.use import use_cmd
-from commands.reset import reset_cmd
-from commands.goto import goto_cmd
-from commands.repeat import repeat_cmd
-from commands.bwd_fwd import forward_cmd
-from commands.bwd_fwd import backward_cmd
-from commands.prev_nextt import previous_cmd
-from commands.prev_nextt import nextt_cmd
-from commands.clean import clean_cmd
+from commands.cmd_imports import *
 
 def main(args):
     if len(args) == 1:
@@ -32,6 +18,7 @@ def main(args):
     cmd = cmds[cmd_name]
     if (len(args) - 2) not in cmd.argc:
         err("Invalid Number of Arguments (Usage: %s)"%(cmd.semantics))
+    meta_dict["source_cmd"] = ""
     cmd.f_view(args)
     
 if __name__ == "__main__":

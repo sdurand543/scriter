@@ -4,7 +4,8 @@
 export SCRITER_BIN="$( cd "$( dirname "$0" )" > /dev/null && pwd )"
 
 function scr() {
-    echo "$(eval "$(python $SCRITER_BIN/main.py $@)")"
+    python $SCRITER_BIN/main.py $@
+    source $HOME/.scriter/source_cmd
 }
 
 scr init

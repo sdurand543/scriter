@@ -1,0 +1,9 @@
+add general preprocessor that can parse where different backtick formations are and execute those separately from 'echo-ed' data
+
+
+add ability to jump to named locations, and revise existing goto to use '!<number>!'
+add soft-run (does not insert results)
+add read text functionality
+add replace text functionality
+add switchable sessions
+add unique interactable text editor ide

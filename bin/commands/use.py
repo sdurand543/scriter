@@ -10,8 +10,6 @@ def use(src_path):
     meta_dict["num_entries"] = get_num_entries(src_path)
 
 def use_view(args):
-    if len(args) != 3:
-        err("Invalid number of arguments")
     src_path = args[2]
     use(src_path)
     view("using %s"%(src_path))

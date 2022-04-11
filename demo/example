@@ -20,7 +20,9 @@ We can provide tips on what is going on.
 
 # 7
 Git add example:
-`git add example`
+```
+git add example
+```
 
 # 8
 Here is your new git status:
@@ -32,16 +34,23 @@ You can also write scriter steps that interact with scriter. Here is an infinite
 # 10
 ```
 function skip() {
-    scr.goto 11
+    scr goto 12
+    scr rep
 }
 ```
 Use 'skip' to exit.
 
 # 11
+```
+scr goto 10
+scr rep
+```
+
+# 12
 You have exited the infinite loop.
 ```
 unset -f skip
 ```
 
-# 12
+# 13
 Ideally we will add 'options' and input boxes, with insert-text support.
